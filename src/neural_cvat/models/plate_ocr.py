@@ -3,6 +3,8 @@ import re
 import cv2
 import numpy as np
 
+from neural_cvat.utils import resolve_torch_device
+
 _PLATE_LETTERS = "авекмнорстух"
 _LATIN_TO_CYR = str.maketrans(
     {
@@ -290,7 +292,11 @@ class PlateOCR:
             import easyocr
 
             langs = config.get("languages") or ["ru", "en"]
-            return easyocr.Reader(langs, gpu=False, verbose=False)
+            return easyocr.Reader(
+                langs,
+                gpu=resolve_torch_device().startswith("cuda"),
+                verbose=False,
+            )
 
         from rapidocr_onnxruntime import RapidOCR
 

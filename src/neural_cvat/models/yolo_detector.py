@@ -7,6 +7,7 @@ from typing import Any
 from neural_cvat.dataset.yolo_export import coco_to_yolo
 from neural_cvat.models.detector import Detector
 from neural_cvat.types import CATEGORY_PLATE, Detection
+from neural_cvat.utils import resolve_torch_device
 
 
 class YoloDetector(Detector):
@@ -64,6 +65,7 @@ class YoloDetector(Detector):
             epochs=epochs,
             imgsz=imgsz,
             batch=batch,
+            device=resolve_torch_device(),
             project=str(output_dir),
             name="detector",
             mosaic=1.0,
@@ -106,6 +108,7 @@ class YoloDetector(Detector):
             imgsz=self.imgsz,
             conf=min(self.conf, self.plate_conf),
             iou=self.iou,
+            device=resolve_torch_device(),
             verbose=False,
         )
         return self._parse_results(results[0])
@@ -122,7 +125,7 @@ class YoloDetector(Detector):
             model_type="yolov8",
             model_path=str(weights),
             confidence_threshold=self.plate_conf,
-            device="cpu",
+            device=resolve_torch_device(),
         )
         result = get_sliced_prediction(
             str(image_path),

@@ -11,6 +11,7 @@ from torch.utils.data import Dataset
 from neural_cvat.dataset.coco_io import load_coco
 from neural_cvat.models.detector import Detector
 from neural_cvat.types import CATEGORY_PLATE, Detection
+from neural_cvat.utils import resolve_torch_device
 
 
 class CocoTorchDataset(Dataset):
@@ -70,7 +71,7 @@ class HfDetector(Detector):
         self._label_to_id = label_to_id
         self.conf = conf
         self.plate_conf = plate_conf
-        self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = device or resolve_torch_device()
         self._model.to(self.device)
 
     @classmethod

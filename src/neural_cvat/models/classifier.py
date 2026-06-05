@@ -11,6 +11,7 @@ from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
 
 from neural_cvat.types import BAG_ATTRIBUTES, BIKE_ATTRIBUTES
+from neural_cvat.utils import resolve_torch_device
 
 
 class CropAttrDataset(Dataset):
@@ -52,7 +53,7 @@ class AttributeClassifier:
         self.model = model
         self.attr_names = attr_names
         self.image_size = image_size
-        self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = device or resolve_torch_device()
         self.model.to(self.device)
 
     @classmethod
