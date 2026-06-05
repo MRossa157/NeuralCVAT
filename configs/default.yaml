@@ -1,0 +1,37 @@
+verified_image_limit: 700
+
+model_name: yolo11n.pt
+imgsz: 1280
+epochs: 50
+batch: 8
+val_ratio: 0.15
+seed: 42
+
+detector:
+  conf: 0.25
+  iou: 0.45
+  plate_conf: 0.15
+  tile_for_plate: false
+
+ocr:
+  backend: rapidocr
+  preprocess: true
+  extract_ru_plate: true
+  min_height: 128
+  pad_ratio: 0.15
+
+classifier:
+  backbone: efficientnet_b0
+  epochs: 20
+  batch: 32
+  lr: 0.001
+  image_size: 224
+
+categories:
+  - { id: 1, name: plate }
+  - { id: 2, name: car }
+  - { id: 3, name: bag }
+  - { id: 4, name: bike }
+
+bag_attributes: [is_clean, is_deptrans_format, is_defected]
+bike_attributes: [is_good_appearance]
